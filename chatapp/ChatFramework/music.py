@@ -40,7 +40,7 @@ def music_get_unique_x(file):
 # ------------가상 선호 모델 설정-------------- #
 def music_make_user_model(sentence):
     
-    unique_x = music_get_unique_x('music_tag.csv')
+    unique_x = music_get_unique_x('data/music/music_tag.csv')
     favor_label = np.zeros((len(unique_x)))
 
     for i in range(len(unique_x)):
@@ -115,7 +115,7 @@ def music_fit_and_evaluate():
 #--------------예측 모델 Bow--------------#
 def music_prediction():
     
-    return_data = pd.read_csv('music_title.csv')
+    return_data = pd.read_csv('data/music/music_title.csv')
     return_featue = return_data['특징']
     t = Tokenizer(num_words = 500) 
     t.fit_on_texts(return_featue)
