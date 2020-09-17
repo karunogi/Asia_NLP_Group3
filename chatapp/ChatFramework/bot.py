@@ -3,6 +3,7 @@ import chatapp.ChatFramework.intro as intro
 import chatapp.ChatFramework.webtoon as webtoon
 import chatapp.ChatFramework.music as music
 import chatapp.ChatFramework.movie as movie
+import numpy as np
 
 # 챗봇 클래스
 class Bot() :
@@ -12,6 +13,7 @@ class Bot() :
         self.webtoon_step = 0
         self.context = ''
         self.gerne = []
+        self.webtoon_data = np.load('chatapp/ChatFramework/data/webtoon/web_toon_data.npy',allow_pickle='TRUE').item()
 
         self.on_music = 0
         self.music_step = 0
@@ -39,7 +41,7 @@ class Bot() :
                 answer = '음.. ' + self.gerne[0] + '..<br/>어떤 스토리의 웹툰을 추천해 드릴까요?'
             elif self.webtoon_step == 2 :
                 answer = webtoon.webtoon_second_conv(sentence, self.context, self.gerne)
-                answer = '이런 작품은 어떠세요?<br/><br/>' + '<br/>'.join(answer.tolist())
+                answer = '이런 작품은 어떠세요?' + self.process_webtoon_answer(answer)
                 self.context = ''
                 self.gerne = []
                 self.on_webtoon = self.webtoon_step = 0
@@ -59,3 +61,19 @@ class Bot() :
                 self.on_movie = self.movie_step = 0
 
         return answer
+
+    def process_webtoon_answer(self, webtoons) :
+        html = ''
+
+        for title in webtoons :
+            html += '<br/><br/><br/><a href="' + self.webtoon_data[title]['detail_url'] + '" target="_blank">'
+            html += '<img src="' + self.webtoon_data[title]['img_url'] + '" /></a><br/>'
+            html += '작품: ' + self.webtoon_data[title]['title'] + '<br/>'
+            html += '카테고리: ' + self.webtoon_data[title]['category'] + '<br/>'
+            html += '장르: ' + self.webtoon_data[title]['gerne'] + ' > ' + self.webtoon_data[title]['sub_gerne'] + '<br/>'
+            html += '평점: ' + self.webtoon_data[title]['star'] + '<br/>'
+            html += '컷툰: ' + ('O' if self.webtoon_data[title]['cuttoon'] == 1 else 'X') + '<br/>'
+            html += '줄거리: ' + self.webtoon_data[title]['summary'] + '<br/>'
+            html += '플랫폼: ' + self.webtoon_data[title]['platform']
+
+        return html
