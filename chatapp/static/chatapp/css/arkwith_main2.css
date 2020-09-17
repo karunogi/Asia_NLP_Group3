@@ -1,0 +1,109 @@
+.fade-in-out-welcome-1 {
+  opacity: 0;
+  pointer-events : none;
+  animation: fadeInOutWelcome1 ease 6s;
+  -webkit-animation: fadeInOutWelcome1 ease 6s;
+  -moz-animation: fadeInOutWelcome1 ease 6s;
+  -o-animation: fadeInOutWelcome1 ease 6s;
+  -ms-animation: fadeInOutWelcome1 ease 6s;
+}
+.fade-in-out-welcome-2 {
+  opacity: 0;
+  pointer-events : none;
+  animation: fadeInOutWelcome2 ease 6s;
+  -webkit-animation: fadeInOutWelcome2 ease 6s;
+  -moz-animation: fadeInOutWelcome2 ease 6s;
+  -o-animation: fadeInOutWelcome2 ease 6s;
+  -ms-animation: fadeInOutWelcome2 ease 6s;
+}
+
+@keyframes fadeInOutWelcome1 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 1; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 0; }
+	100%	{ opacity: 0; }
+}
+@keyframes fadeInOutWelcome2 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 0; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 1; }
+	100%	{ opacity: 0; }
+}
+
+@-moz-keyframes fadeInOutWelcome1 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 1; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 0; }
+	100%	{ opacity: 0; }
+}
+@-moz-keyframes fadeInOutWelcome2 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 0; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 1; }
+	100%	{ opacity: 0; }
+}
+
+@-webkit-keyframes fadeInOutWelcome1 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 1; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 0; }
+	100%	{ opacity: 0; }
+}
+@-webkit-keyframes fadeInOutWelcome2 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 0; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 1; }
+	100%	{ opacity: 0; }
+}
+
+@-o-keyframes fadeInOutWelcome1 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 1; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 0; }
+	100%	{ opacity: 0; }
+}
+@-o-keyframes fadeInOutWelcome2 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 0; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 1; }
+	100%	{ opacity: 0; }
+}
+
+@-ms-keyframes fadeInOutWelcome1 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 1; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 0; }
+	100%	{ opacity: 0; }
+}
+@-ms-keyframes fadeInOutWelcome2 {
+	0%	{ opacity: 0; }
+	25%	{ opacity: 0; }
+	50%	{ opacity: 0; }
+	75%	{ opacity: 1; }
+	100%	{ opacity: 0; }
+}
+
+.center-text {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
