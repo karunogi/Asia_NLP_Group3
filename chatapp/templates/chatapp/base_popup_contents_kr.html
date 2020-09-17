@@ -8,6 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap Core CSS -->
+  <link href="{% static 'chatapp/css/particles.css' %}" rel="stylesheet">
   <link href="{% static 'chatapp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- iziModal -->
@@ -24,6 +25,8 @@
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -359,14 +362,19 @@
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
-
 <!-- div class="page-wrapper" -->
+<div id="particles-js">
 <div id="page-wrapper">
 {% block content %}{% endblock %}
 </div>
-
+</div>
 
 {% block javascript %}{% endblock %}
 
 </body>
+<script>
+  particlesJS.load("particles-js", "{% static 'chatapp/data/particles.json' %}", function(){
+    console.log('callback - particles.js config loaded');
+  });
+</script>
 </html>

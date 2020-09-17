@@ -213,7 +213,8 @@ function update(text){ // text is  HTML code to append to the 'chat log' div. Th
 function restart_chatbot() {
 	//alert('Resume the conversation.');
 	responseHolder.innerHTML = "";
-	processResponse("아크위드 채팅 홈페이지에 오신것을 환영합니다.");
+	processResponse("반가워요~");
+	processResponse("어떤 콘텐츠를 추천해 드릴까요?");
 }
 
 // TTS code taken and modified from here:

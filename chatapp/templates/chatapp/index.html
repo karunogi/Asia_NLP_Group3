@@ -1,5 +1,55 @@
-{% extends "base.html" %}
- 
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>RE,COMMA</title>
+	<link href="{% static 'chatapp/css/particles.css' %}" rel="stylesheet">
+	<link href="{% static 'chatapp/css/arkwith_main2.css' %}" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+	<script src="{% static 'chatapp/vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'chatapp/js/responsive_font_size.js' %}"></script>
+</head>
+<body>
+	<div id="particles-js">
+		<div class='center'>
 {% block content %}
-    <h1>{{message}}</h1>
+			<div class='fade-in-out-welcome-1 center center-text responsive-font-size' data-font-ratio='0.8' style='font-weight: bold;'>
+				안녕하세요?<br/>RE,COMMA 입니다.
+			</div>
+			<div class='fade-in-out-welcome-2 center center-text responsive-font-size' data-font-ratio='0.7' style='font-weight: bold;'>
+				저만 알고 있는<br/>재미있는 콘텐츠를<br/>알려드릴게요.
+			</div>
+		</div>
+	</div>
+	<script>
+		var seconds = 6; // seconds for HTML
+		var timer; // variable for clearInterval() function
+
+		function redirect() {
+		    document.location.href = 'chatapp/popup_chat_home';
+		}
+
+		function updateSecs() {
+		    seconds -= 0.5;
+		    if (seconds < 0) {
+		        clearInterval(timer);
+		        redirect();
+		    }
+		}
+
+		function countdownTimer() {
+		    timer = setInterval(function () {
+		        updateSecs()
+		    }, 500);
+		}
+
+		countdownTimer();
+	</script>
 {% endblock content %}
+</body>
+<script>
+	particlesJS.load("particles-js", "{% static 'chatapp/data/particles.json' %}", function(){
+		console.log('callback - particles.js config loaded');
+	});
+</script>
+</html>

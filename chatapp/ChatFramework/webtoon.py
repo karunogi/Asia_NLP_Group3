@@ -26,13 +26,13 @@ from sklearn.metrics.pairwise import linear_kernel
 ############################################ 데이터 로드 ##############################################
 
 #웹툰 데이터 로드
-webtoon_data = np.load('data/webtoon/web_toon_data.npy',allow_pickle='TRUE').item()
+webtoon_data = np.load('chatapp/ChatFramework/data/webtoon/web_toon_data.npy',allow_pickle='TRUE').item()
 
 #웹툰 장르 분류모델 로드, 해당 기능 단어사전데이터 로드
-gerne_model = keras.models.load_model('data/webtoon/gerne_conv.h5')
-gerne_model_data = np.load('data/webtoon/gerne_model_data.npy',allow_pickle='TRUE').item()
-gerne_classes = np.load('data/webtoon/gerne_classes.npy',allow_pickle='TRUE').item()['file']
-gerne_words = np.load('data/webtoon/gerne_words.npy',allow_pickle='TRUE').item()['file']
+gerne_model = keras.models.load_model('chatapp/ChatFramework/data/webtoon/gerne_conv.h5')
+gerne_model_data = np.load('chatapp/ChatFramework/data/webtoon/gerne_model_data.npy',allow_pickle='TRUE').item()
+gerne_classes = np.load('chatapp/ChatFramework/data/webtoon/gerne_classes.npy',allow_pickle='TRUE').item()['file']
+gerne_words = np.load('chatapp/ChatFramework/data/webtoon/gerne_words.npy',allow_pickle='TRUE').item()['file']
 
 #######################################################################################################
 

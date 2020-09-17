@@ -4,23 +4,38 @@ import random
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense
+from konlpy.tag import Okt
 
 
-# 가상 sentence
+# 가상 sentence 
 
-sentence = '알앤비 그루브한 힙스터 밤 가을 재즈'
+sentence = '힙합 알앤비 풍의 새벽 밤에 듣기 좋은 시원한 재즈 추천해줘'
 
 
-#----------sentence 전처리--------------#
+#-------------sentence 전처리--------------#
+
 def music_preprocessing_sentence(sentence):
     
-    sentence = sentence.split()
+    okt= Okt()
+    okt_tokens = okt.pos(sentence)
+    stopPos = ['Josa','Verb']
+    stopWord = '듣기 좋은 추천해줘 추천 같은 처럼 같이 들으면 듣고 싶어 풍 추천 '
+    stopWord = stopWord.split()
+
+    word = []
     
-    return sentence
+    for tag in okt_tokens:
+        if tag[1] not in stopPos:
+            if tag[0] not in stopWord:
+                word.append(tag[0])
+    
+    #print(word)
+    
+    return word
 
 
-# ---------데이터리스트에서 unique한 feature 목록만 가져옴---------- # 
+# ---------전체 데이터리스트에서 unique한 tag 집합만 가져옴---------- # 
 
 def music_get_unique_x(file):
 
@@ -38,21 +53,23 @@ def music_get_unique_x(file):
 
 
 # ------------가상 선호 모델 설정-------------- #
+
 def music_make_user_model(sentence):
     
-    unique_x = music_get_unique_x('data/music/music_tag.csv')
+    unique_x = music_get_unique_x('chatapp/ChatFramework/data/music/music_tag.csv')
     favor_label = np.zeros((len(unique_x)))
 
     for i in range(len(unique_x)):
         for favor in sentence:  
             if favor in unique_x[i]:
                 favor_label[i] += 1                
-    max_class = max_class = int(np.max(favor_label))
+    max_class = int(np.max(favor_label))
     
     return unique_x, favor_label, max_class
 
 
-#--------split train and test data-----------#
+#--------train data와 test data 나누기----------#
+
 def music_split_data():
     
     total_data, total_label, max_class = music_make_user_model(sentence)
@@ -68,6 +85,7 @@ def music_split_data():
 
 
 #-------------BoW형태 데이터 준비-----------------#
+
 def music_prepare_data():
     
     train_data, test_data, train_label, test_label = music_split_data()
@@ -80,6 +98,8 @@ def music_prepare_data():
     
     return X_train, X_test, train_label, test_label, max_words
 
+#------------BoW 형태의 train, test 데이터 준비------------------#
+
 def music_set_data():
     
     max_class = music_make_user_model(sentence)[2]
@@ -91,31 +111,36 @@ def music_set_data():
     return X_train, X_test, y_train, y_test, max_class
 
 #----------------모델 학습-----------------#
+
 def music_fit_and_evaluate():
     
     X_train, X_test, y_train, y_test, max_class = music_set_data()
     max_words = music_prepare_data()[4]
     
     model = Sequential() 
+    
     model.add(Dense(256, input_shape = (max_words,), activation = 'relu'))
-    #model.add(Dropout(0.5))
     model.add(Dense(128, activation = 'relu'))
-    #model.add(Dropout(0.5))
     model.add(Dense(max_class+1, activation = 'softmax'))
+    
     model.compile(loss = 'categorical_crossentropy',
                   optimizer= 'rmsprop',
                  metrics =['accuracy'])
-    model.fit(X_train,y_train, batch_size = 128, epochs = 6, verbose = 1, validation_split = 0.1)
+    
+    model.fit(X_train,y_train, batch_size = 128, epochs = 10, verbose = 1, validation_split = 0.1)
     results = model.evaluate(X_test, y_test, batch_size = 128, verbose = 0)
+    
+    # 정확도 확인
     print(results[1])
     
     return model 
 
 
-#--------------예측 모델 Bow--------------#
+#--------------예측 모델 BoW--------------#
+
 def music_prediction():
     
-    return_data = pd.read_csv('data/music/music_title.csv')
+    return_data = pd.read_csv('chatapp/ChatFramework/data/music/music_title.csv')
     return_featue = return_data['특징']
     t = Tokenizer(num_words = 500) 
     t.fit_on_texts(return_featue)
@@ -125,13 +150,11 @@ def music_prediction():
     return return_data, return_data2
 
 #-------------모델 예측----------------#
+
 def music_apply_predict():
     
     model = music_fit_and_evaluate()
-    return_data, return_data2 = music_prediction()
-    
-    return_data = music_prediction()[0]
-    return_data2 = music_prediction()[1]    
+    return_data, return_data2 = music_prediction()    
     predict_value = model.predict(return_data2)
     
     predict_label = []
@@ -143,7 +166,8 @@ def music_apply_predict():
     
     return return_data
     
-#------------대답하기-------------------#    
+#------------대답하기-------------------#  
+
 def music_return_to_page():
     
     return_data = music_apply_predict()
@@ -155,12 +179,17 @@ def music_return_to_page():
     return answer
 
 #---------------총 실행--------------------#
-def get_answer(_sentence):
 
+def get_answer(_sentence):
+       
     global sentence
     sentence = _sentence
     _sentence = music_preprocessing_sentence(_sentence)
     unique_x, favor_label, max_class = music_make_user_model(_sentence)
-    answer = music_return_to_page()
-    
+    answer = music_return_to_page() 
+
     return answer
+
+
+# 예측
+# get_answer(sentence)
