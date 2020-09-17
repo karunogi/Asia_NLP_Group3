@@ -1,0 +1,8 @@
+# Anaconda Prompt 실행
+conda create -n recomma python=3.8 django=2.2.5 pandas scikit-learn
+conda activate recomma
+# https://download.lfd.uci.edu/pythonlibs/x2tqcw5k/JPype1-1.0.2-cp38-cp38-win_amd64.whl
+pip install JPype1-1.0.2-cp38-cp38-win_amd64.whl
+pip install tensorflow==2.3.0 keras==2.4.3 konlpy
+# cd 명령어로 프로젝트 폴더로 이동후
+python manage.py runserver
