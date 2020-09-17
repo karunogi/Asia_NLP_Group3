@@ -144,27 +144,18 @@ def predict_class(sentense,model,data_len,classes,words,stop_word=[]):
 
 ############################################ 시나리오 ##################################################
 
-def main_scenario():
-    context = ''
-    gerne = []
- 
-    user_answer = input('어떤 장르의 웹툰을 추천해 드릴까요?')
+def webtoon_first_conv(user_answer, context, gerne):
     answer, _ = predict_class(user_answer,gerne_model,gerne_model_data['words'],gerne_classes,gerne_words,stop_word=stop_word)
     context += ' '+user_answer
     gerne.append(answer)
     gerne.append(answer)
-    print(answer, '를 추천해드릴게요')
-    
-    user_answer = input('어떤 스토리의 웹툰을 추천해 드릴까요?')
-    answer, _ = predict_class(user_answer,gerne_model,gerne_model_data['words'],gerne_classes,gerne_words,stop_word=stop_word)
-    # gerne.append(answer)
-    print(answer, '를 추천해드릴게요')
-    
+    print(answer)
+    return context, gerne
+
+def webtoon_second_conv(user_answer, context, gerne):
     context += ' '+user_answer
     data_set = add_user_sentence(context,gerne)
     cosine_sim, idx_dict = cosine_similarity(data_set)
-    print(get_recommendations(data_set, idx_dict, cosine_sim))
-
-main_scenario()
+    return get_recommendations(data_set, idx_dict, cosine_sim)
 
 #######################################################################################################

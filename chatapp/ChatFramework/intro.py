@@ -1,3 +1,5 @@
+############################################ 라이브러리 로드 #########################################
+
 #Json파일 로드와 저장을 위한 라이브러리
 import json
 import pickle
@@ -14,11 +16,21 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 
+######################################################################################################
+
+
+############################################ 데이터 로드 ##############################################
+
 #[웹툰,음악,영화]데이터 분류모델 로드, 해당 기능 단어사전데이터 로드
 opening_model = keras.models.load_model('data/webtoon/opening_conv.h5')
 opening_model_data = np.load('data/webtoon/opening_model_data.npy',allow_pickle='TRUE').item()
 open_classes = np.load('data/webtoon/open_classes.npy',allow_pickle='TRUE').item()['file']
 open_words = np.load('data/webtoon/open_words.npy',allow_pickle='TRUE').item()['file']
+
+#######################################################################################################
+
+
+############################################ 함수 정의 #################################################
 
 def clean_up_sentence(sentence,stop_word):
     """들어온 문장을 토큰화해서 리턴해주는 함수"""
@@ -54,14 +66,13 @@ def predict_class(sentense,model,data_len,classes,words,stop_word=[]):
     class_value = classes[np.argmax(predict_value[0])]
     return class_value, predict_value
 
-def main_scenario():
+#######################################################################################################
 
-    user_answer = input('어떤 콘텐츠를 추천해 드릴까요?')
+
+############################################ 시나리오 ##################################################
+
+def opening_first_conv(user_answer):
     answer, _ = predict_class(user_answer,opening_model, opening_model_data['words'], open_classes, open_words)
-    # predict_class함수 리턴 유형
-    ## 1. 라벨 유형 : ['goodbye', 'hello', 'movie', 'music', 'service', 'thanks', 'webtoon']
-    ## 2. 각 라벨에 대한 확률 값 : [[0.00151726 0.01952674 0.00542705 0.09988319 0.01905727 0.00411863 0.8504699 ]]
-    # open_classes안에 클래스 목록들 저장되어 있음
-    print(answer, '를 추천해드릴게요')
+    return answer
 
-main_scenario()
+#######################################################################################################
