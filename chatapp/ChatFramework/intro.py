@@ -11,7 +11,7 @@ twitter = Okt()
 
 #데이터 로드와 모델 사용을 위한 라이브러리
 from tensorflow.keras.models import Sequential
-import tensorflow.keras
+import tensorflow.keras as keras
 import tensorflow as tf
 import numpy as np
 import pandas as pd
