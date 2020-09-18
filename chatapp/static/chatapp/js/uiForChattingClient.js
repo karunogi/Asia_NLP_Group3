@@ -225,7 +225,10 @@ function speak(text, callback) {
     if ( cbTTSEnabled == 'checked' ) {
     	 var msg = new SpeechSynthesisUtterance();
     	 msg.lang = 'ko-KR';
-    	 msg.text = text;
+    	 if (150 < text.length)
+    	 	msg.text = '이런 콘텐츠는 어떠세요?';
+    	 else
+    	 	msg.text = text;
     	 speechSynthesis.speak(msg);
     	/**
     	var u = new SpeechSynthesisUtterance();
