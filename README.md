@@ -30,6 +30,7 @@ RE,COMMA는 사용자의 질문을 NLP를 통해 분석하여, 사용자 맞춤�
 
 ### 크롤링
 - 해당 데이터는 음악유통사이트인 'Bugs'에서 크롤링 되었습니다.
+![image](https://user-images.githubusercontent.com/68881092/93791896-c4b53200-fc6f-11ea-997d-1e3c090c9a25.png)
 
 <pre>
 <code>
