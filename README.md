@@ -1,4 +1,6 @@
-# 영화 추천 
+# 영화 추천
+
+## 기획과정
 저는 영화 추천 알고리즘을 만드는데 상당한 시간이 소요되었습니다. 데이터가 많아 처리하는데 시간이 오래 걸렸고 사용자마다 좋아하는 영화가 국가,시간,장르,내용마다 다르기 때문에 어떤 변수를 넣은게 편리한지 여러번 고민하였고 딥러닝 모델을 만드는 과정에서 정확도가 낮아서 다른 방법을 생각해보았습니다. 생각해본 결과 줄거리를 단어,형태소별로 분류해 불용어처리하고 태그를 만들어서 사용자가 선호하는 내용이 담긴 영화를 추천하기로 기획하였습니다. 결론은 사용자가 선호하는 내용을 태그로 만들어 본인이 입력한 것을 태그에 연결해 이에 맞는 영화를 자동으로 추천해주는 것입니다. 
 
 ## 데이터 가공
@@ -96,5 +98,68 @@ def descript_to_list():
         wordlist.append(desc)
     #print(len(words))
     return movies,wordlist
+</code>
+</pre>
+
+### 선호하는 내용 묻기
+선호하는 내용의 일부를 입력 받아서 함수 내에서 형태소,단어 분류 후 불용어를 제거함.
+<pre>
+<code>
+def question(sentence):#선호하는 것 묻기
+    answer=sentence
+    from konlpy.tag import Okt
+    okt=Okt()
+    okt_tokens=okt.morphs(answer)  
+    oktTag = []
+    for token in okt_tokens:
+        oktTag += okt.pos(token)
+    stopwords=['을','은','가','할','수','건','것','추천','해','주세요','줘',
+          '없','어요','뭐','있','지','를','합니다','는','저','영화']
+    stoppos=['Determiner','Adverb','Conjunction','Josa','PreEomi','Eomi','Suffix',
+           'Punctuation','Foreign','Alpha','Number','Unknown', 'Adjective']
+    sentence=[]
+    for tag in oktTag:
+        if tag[1] not in stoppos:
+            if tag[0] not in stopwords:
+                sentence.append(tag[0])
+    return sentence
+</code>
+</pre>
+
+### 사용자 맞춤 모델 제작
+영화 데이터와 태그를 만들기 위한 단어리스트를 받고 태그의 중복을 방지하기 위해 tags를 새로 제작함.
+입력받은 sentence를 가지고 해당 단어가 tag에 있으면 1을 추가해 가장 많이 나온 태그를 np.max를 사용해서 max class를 만듦.
+<pre>
+<code>    
+def movie_user_model(sentence):
+movies,wordlist=descript_to_list()
+tags=[]
+for i in wordlist:
+    for j in i:
+        tags.extend(i)
+tags=list(set(tags))#태그 백터를 만들어 중복을 제거
+
+tag_label=np.zeros(len(tags))
+for i in range(len(tags)):
+    for a in sentence:
+        if a in tags[i]:
+            tag_label[i]+=1
+max_class=max_class=int(np.max(tag_label))
+return tags,tag_label,max_class
+</code>
+</pre>
+
+### 결론
+사용자가 필요하는 것을 input을 이용하여 입력받아 최종적으로 영화를 추천해주는 것이다.
+<pre>
+<code>
+def get_answer(sentence):
+    sentence=question(sentence)
+    tags,tag_label,max_class=movie_user_model(sentence)
+    answer=recommendation()
+    return answer
+
+sentence=input()
+get_answer(sentence)
 </code>
 </pre>
