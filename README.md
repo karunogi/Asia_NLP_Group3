@@ -102,7 +102,7 @@ def descript_to_list():
 </pre>
 
 ### 선호하는 내용 묻기
-선호하는 내용의 일부를 입력 받아서 함수 내에서 형태소,단어 분류 후 불용어를 제거함.
+선호하는 내용의 일부를 입력 받아서 함수 내에서 형태소,단어 분류 후 불용어를 제거
 <pre>
 <code>
 def question(sentence):#선호하는 것 묻기
@@ -127,8 +127,8 @@ def question(sentence):#선호하는 것 묻기
 </pre>
 
 ### 사용자 맞춤 모델 제작
-영화 데이터와 태그를 만들기 위한 단어리스트를 받고 태그의 중복을 방지하기 위해 tags를 새로 제작함.
-입력받은 sentence를 가지고 해당 단어가 tag에 있으면 1을 추가해 가장 많이 나온 태그를 np.max를 사용해서 max class를 만듦.
+영화 데이터와 태그를 만들기 위한 단어리스트를 받고 태그의 중복을 방지하기 위해 tags를 새로 제작했습니다
+입력받은 sentence를 가지고 해당 단어가 tag에 있으면 1을 추가해 가장 많이 나온 태그를 np.max를 사용해서 max class를 만들었습니다
 <pre>
 <code>    
 def movie_user_model(sentence):
@@ -149,8 +149,60 @@ return tags,tag_label,max_class
 </code>
 </pre>
 
-### 결론
-사용자가 필요하는 것을 input을 이용하여 입력받아 최종적으로 영화를 추천해주는 것이다.
+### 데이터 분류 및 딥러닝 모델 설계
+<pre>
+<code>
+def data_split():
+    tags,tag_label,max_class=movie_user_model(sentence)
+    train_data=tags[:1500]
+    test_data=tags[1500:]
+
+    train_label=tag_label[:1500]
+    test_label=tag_label[1500:]    
+    max_words = 200 # 실습에 사용할 단어의 최대 개수
+    #num_classes= tag_label 
+    return train_data,test_data,train_label,test_label,max_words
+
+def prepare_data(train_data,test_data): 
+    train_data,test_data,train_label,test_label,max_words=data_split()
+    t = Tokenizer(num_words = max_words) 
+    t.fit_on_texts(train_data)
+    X_train = t.texts_to_matrix(train_data, mode='count')#단어의 출현 빈도를 표시한 DTM 생성.
+    X_test = t.texts_to_matrix(test_data, mode='count')  # 샘플 수 × max_words 크기의 행렬 생성
+    return X_train, X_test, train_label, test_label, max_words
+
+def set_data():
+    #from tensorflow.keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.utils import to_categorical
+    tags,tag_label,max_class=movie_user_model(sentence)
+    train_data,test_data,train_label,test_label,max_words=data_split()
+    X_train, X_test, train_label, test_label, max_word=prepare_data(train_data,test_data)
+    y_train = to_categorical(train_label, max_class+1) 
+    y_test = to_categorical(test_label, max_class+1) # 원-핫 인코딩
+
+    return X_train,X_test,y_train,y_test,max_class
+
+def fit_and_evaluate():
+    X_train,X_test,y_train,y_test,max_class=set_data()
+    from tensorflow.keras import models #태그구분 모델링
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Dense,Dropout
+    train_data,test_data,train_label,test_label,max_words=data_split()
+    model=Sequential()
+    model.add(Dense(256,activation='relu',input_shape=(max_words,)))
+    model.add(Dropout(0.5))
+    model.add(Dense(128,activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(max_class+1,activation='softmax'))
+    model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+    model.fit(X_train,y_train,batch_size=128,epochs=5,validation_split=0.2)
+    model.summary()
+    score=model.evaluate(X_test,y_test,batch_size=128)
+    return model
+</code>
+</pre>
+## 결론
+사용자가 필요하는 것을 input을 이용하여 입력받아 최종적으로 영화를 추천해주는 것입니다.
 <pre>
 <code>
 def get_answer(sentence):
@@ -163,3 +215,4 @@ sentence=input()
 get_answer(sentence)
 </code>
 </pre>
+
