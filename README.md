@@ -70,6 +70,8 @@ for i in range(len(movie)):
 
 ### 태그 제작-2
 결국 라벨링한 것을 거부하고 태그를 다시 만들었습니다.
+<pre>
+<code>
 def descript_to_list():
     movies=pd.read_csv('movie_labeled.csv')
     from konlpy.tag import Okt#줄거리를 일부를 나눠서 태그 구성
@@ -94,3 +96,5 @@ def descript_to_list():
         wordlist.append(desc)
     #print(len(words))
     return movies,wordlist
+</code>
+</pre>
