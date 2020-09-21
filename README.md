@@ -168,3 +168,4 @@ def music_apply_predict():
 
 5. sklearn을 활용한 나이브베이지안을 통한 예측방안 고찰
 
+6. tag데이터 외에 있는 단어의 경우 인식하지 못함
