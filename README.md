@@ -58,11 +58,11 @@ def tag_crawling():
     return tagging_list
 </code>
 </pre>
- 해당 코드를 통해 10000여개의 태그리스트 데이터인 music_tag.csv 파일을 만들었습니다.
- music_tag.csv는 학습용 데이터로 사용되었습니다.
- 추가로 1700여개의 노래 제목 / 가수 / tag 데이터인 music_title.csv 파일을 만들었습니다.
- music_title.csv 파일은 예측용 데이터로 사용되었습니다.
- 예측오류를 방지하고자, 비교적 특징적이지 않은 국내, 해외, 국내외, 가요 등의 데이터는 삭제하였습니다.
+- 해당 코드를 통해 10000여개의 태그리스트 데이터인 music_tag.csv 파일을 만들었습니다.
+- music_tag.csv는 학습용 데이터로 사용되었습니다.
+- 추가로 1700여개의 노래 제목 / 가수 / tag 데이터인 music_title.csv 파일을 만들었습니다.
+- music_title.csv 파일은 예측용 데이터로 사용되었습니다.
+- 예측오류를 방지하고자, 비교적 특징적이지 않은 국내, 해외, 국내외, 가요 등의 데이터는 삭제하였습니다.
 
 
 ### music.py 
@@ -84,8 +84,8 @@ def music_make_user_model(sentence):
     return unique_x, favor_label, max_class
 </code>
 </pre>
- 전처리로 키워드만 남기고, 각각 tag list의 row마다 해당 키워드가 있을경우 1을 추가합니다.
- 높은 label값을 가질수록 높은 선호도를 나타냅니다.
+- 전처리로 키워드만 남기고, 각각 tag list의 row마다 해당 키워드가 있을경우 1을 추가합니다.
+- 높은 label값을 가질수록 높은 선호도를 나타냅니다.
 
 <pre>
 <code>
@@ -113,9 +113,9 @@ def music_fit_and_evaluate():
     return model
 </code>
 </pre>
-키워드 수에 따라 label 값이 달라지므로, 다중분류를 진행합니다.
-사용자의 대답에 맞게 모델을 설정하므로, 빠른 응답을 위해 epochs값을 10미만으로 설정했습니다.
-max_words는 500으로 설정하였습니다.
+- 키워드 수에 따라 label 값이 달라지므로, 다중분류를 진행합니다.
+- 사용자의 대답에 맞게 모델을 설정하므로, 빠른 응답을 위해 epochs값을 10미만으로 설정했습니다.
+- max_words는 500으로 설정하였습니다.
 
 <pre>
 <code>
@@ -135,7 +135,10 @@ def music_apply_predict():
     return return_data
 </code>
 </pre>
-약 1700개의 예측 데이터에 사용자 모델을 적용해 Y값을 예측합니다.
-이후 코드에서 가장 높은 label값을 가진 데이터 중에서 random한 값을 출력해 사용자에게 추천해줍니다.
+- 약 1700개의 예측 데이터에 사용자 모델을 적용해 Y값을 예측합니다.
+- 이후 코드에서 가장 높은 label값을 가진 데이터 중에서 random한 값을 출력해 사용자에게 추천해줍니다.
+
+
+
 
 
