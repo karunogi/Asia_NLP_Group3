@@ -69,6 +69,8 @@ def tag_crawling():
 
 
 ### music.py 
+
+#### 예측모델 전처리
 <pre>
 <code>
 def music_make_user_model(sentence):
@@ -90,6 +92,7 @@ def music_make_user_model(sentence):
 - 전처리로 키워드만 남기고, 각각 tag list의 row마다 해당 키워드가 있을경우 1을 추가합니다.
 - 높은 label값을 가질수록 높은 선호도를 나타냅니다.
 
+#### 예측모델 생성
 <pre>
 <code>
 def music_fit_and_evaluate():
@@ -120,6 +123,7 @@ def music_fit_and_evaluate():
 - 사용자의 대답에 맞게 모델을 설정하므로, 빠른 응답을 위해 epochs값을 10미만으로 설정했습니다.
 - max_words는 500으로 설정하였습니다.
 
+#### 선호 음악 예측
 <pre>
 <code>
 def music_apply_predict():
@@ -143,7 +147,7 @@ def music_apply_predict():
 
 ## 시행착오
 1. t.texts_to_matrix의 mode설정
--> 크롤링한 tag리스트에는 문장 내 단어 순서간의 연관성이 없으므로, tfidf가 아닌 count로 변경하였습니다.
+-> 크롤링한 tag리스트에는 문장 내 단어 순서간의 연관성이 없으므로, 'tfidf'가 아닌 'count'로 변경하였습니다.
 
 2. sentence 전역변수의 설정
 
