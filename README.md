@@ -150,13 +150,13 @@ return tags,tag_label,max_class
 </pre>
 
 ### 데이터 분류 및 딥러닝 모델 설계
+tags,tag_label 둘 다 train,test로 나누고 dtm을 만들어 x_train,x_test를 생성하고 y_train,y_test를 원핫인코딩하였습니다.
 <pre>
 <code>
 def data_split():
     tags,tag_label,max_class=movie_user_model(sentence)
     train_data=tags[:1500]
     test_data=tags[1500:]
-
     train_label=tag_label[:1500]
     test_label=tag_label[1500:]    
     max_words = 200 # 실습에 사용할 단어의 최대 개수
@@ -179,12 +179,11 @@ def set_data():
     X_train, X_test, train_label, test_label, max_word=prepare_data(train_data,test_data)
     y_train = to_categorical(train_label, max_class+1) 
     y_test = to_categorical(test_label, max_class+1) # 원-핫 인코딩
-
     return X_train,X_test,y_train,y_test,max_class
 
 def fit_and_evaluate():
     X_train,X_test,y_train,y_test,max_class=set_data()
-    from tensorflow.keras import models #태그구분 모델링
+    from tensorflow.keras import models #태그 구분 모델링
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import Dense,Dropout
     train_data,test_data,train_label,test_label,max_words=data_split()
