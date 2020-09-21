@@ -39,7 +39,6 @@ def tag_crawling():
                   'page':i}
         headers = {
             'User-Agent': 'User-Agent'
-
         }
         print('{}페이지 크롤링 중'.format(i))
 
@@ -59,3 +58,51 @@ def tag_crawling():
     return tagging_list
 </code>
 </pre>
+- 해당 코드를 통해 10000여개의 태그리스트 데이터인 music_tag.csv 파일을 만들었습니다.
+- music_tag.csv는 학습용 데이터로 사용되었습니다.
+- 추가로 1700여개의 노래 제목 / 가수 / tag 데이터인 music_title.csv 파일을 만들었습니다.
+- music_title.csv 파일은 예측용 데이터로 사용되었습니다.
+- 예측오류를 방지하고자, 비교적 특징적이지 않은 국내, 해외, 국내외, 가요 등의 데이터는 삭제하였습니다.
+
+
+### music.py 
+<pre>
+<code>
+def music_make_user_model(sentence):
+    
+    unique_x = music_get_unique_x('chatapp/ChatFramework/data/music/music_tag.csv')
+    favor_label = np.zeros((len(unique_x)))
+    sentence = music_preprocessing_sentence(sentence)
+
+    for word in sentence:
+        for i in range(len(unique_x)):
+            if word in unique_x[i]:
+                favor_label[i] += 1 
+
+    max_class = int(np.max(favor_label))
+    
+    return unique_x, favor_label, max_class
+</code>
+</pre>
+- 전처리로 키워드만 남기고, 각각 tag list의 row마다 해당 키워드가 있을경우 1을 추가합니다.
+- 높은 label값을 가질수록 높은 선호도를 나타냅니다.
+
+<pre>
+<code>
+def music_apply_predict():
+    
+    model = music_fit_and_evaluate()
+    return_data, return_feature = music_prediction()    
+    predict_value = model.predict(return_feature)
+    
+    predict_label = []
+    
+    for i in range(len(predict_value)):
+        predict_label.append(np.argmax(predict_value[i]))
+        
+    return_data['label'] = predict_label
+    
+    return return_data
+</code>
+</pre>
+- model
