@@ -29,4 +29,33 @@ RE,COMMA는 사용자의 질문을 NLP를 통해 분석하여, 사용자 맞춤�
 
 ### 크롤링
 - 해당 데이터는 음악유통사이트인 'Bugs'에서 크롤링 되었습니다.
+<pre>
+<code>
+def tag_crawling():
+    tagging_list = []
+    for i in range(500):        
+        base_url = 'https://music.bugs.co.kr/musicpd'
+        params = {'order':'list',
+                  'page':i}
+        headers = {
+            'User-Agent': 'User-Agent'
 
+        }
+        print('{}페이지 크롤링 중'.format(i))
+
+        resp = requests.get(base_url,params = params, headers=headers)
+        soup = BeautifulSoup(resp.text)
+
+        p_tags = soup.select('p.theme')
+        
+        for p in p_tags:    
+            a_tags = p.select('a')
+            sum_tag = ''
+            
+            for tag in a_tags:
+                sum_tag += (tag.text).replace('#','').replace('/',' ') + ' '
+            tagging_list.append(sum_tag)
+
+    return tagging_list
+</code>
+</pre>
