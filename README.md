@@ -142,6 +142,17 @@ def music_apply_predict():
 - 이후 코드에서 가장 높은 label값을 가진 데이터 중에서 random한 값을 출력해 사용자에게 추천해줍니다.
 
 ## 시행착오
+1. t.texts_to_matrix의 mode설정
+-> 크롤링한 tag리스트에는 문장 내 단어 순서간의 연관성이 없으므로, tfidf가 아닌 count로 변경하였습니다.
+
+2. sentence 전역변수의 설정
+
+3. 전처리된 함수를 label 설정함수 >>>music_make_user_model(sentence)<<<에 포함시키지 않은 실수로, 한글자씩 label값으로 포함되어 예측결과를 잘못 도출해 수정하였습니다.
+
+
+## 아쉬운점
+1. 
+
 
 
 
