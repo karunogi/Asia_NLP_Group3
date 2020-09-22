@@ -85,7 +85,7 @@ def music_make_user_model(sentence):
         for i in range(len(unique_x)):
             if word in unique_x[i]:
                 favor_label[i] += 1 
-
+    
     max_class = int(np.max(favor_label))
     
     return unique_x, favor_label, max_class
